@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students MarkSheet</title>
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #e2f0cb;
+            min-height: 100vh;
+        }
+        .text-pass {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        .text-fail {
+            color: #c62828;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-5 px-4">
+        <div class="row g-4">
+            <div class="col-12 col-md-4 col-lg-3">
+                <div class="card shadow-sm border-0 p-4">
+                    <h2 class="text-center h4 mb-4 text-secondary font-weight-bold">Students MarkSheet</h2>
+                    <form id="markSheetForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-semibold text-muted small">Name</label>
+                            <input type="text" class="form-control" id="name" required placeholder="Enter your Name" autocomplete="off">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rollNo" class="form-label fw-semibold text-muted small">Roll No</label>
+                            <input type="number" class="form-control" id="rollNo" required placeholder="Enter your Roll No">
+                        </div>
+                        <div class="mb-2">
+                            <label for="sub1" class="form-label fw-semibold text-muted small">Subject 1</label>
+                            <input type="number" class="form-control" id="sub1" min="0" max="100" required placeholder="Enter your mark">
+                        </div>
+                        <div class="mb-2">
+                            <label for="sub2" class="form-label fw-semibold text-muted small">Subject 2</label>
+                            <input type="number" class="form-control" id="sub2" min="0" max="100" required placeholder="Enter your mark">
+                        </div>
+                        <div class="mb-2">
+                            <label for="sub3" class="form-label fw-semibold text-muted small">Subject 3</label>
+                            <input type="number" class="form-control" id="sub3" min="0" max="100" required placeholder="Enter your mark">
+                        </div>
+                        <div class="mb-2">
+                            <label for="sub4" class="form-label fw-semibold text-muted small">Subject 4</label>
+                            <input type="number" class="form-control" id="sub4" min="0" max="100" required placeholder="Enter your mark">
+                        </div>
+                        <div class="mb-3">
+                            <label for="sub5" class="form-label fw-semibold text-muted small">Subject 5</label>
+                            <input type="number" class="form-control" id="sub5" min="0" max="100" required placeholder="Enter your mark">
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100 fw-bold text-dark mt-2 py-2">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-12 col-md-8 col-lg-9">
+                <div class="card shadow-sm border-0 p-4 table-responsive">
+                    <table class="table table-striped table-bordered align-middle text-center mb-0" id="markSheetTable">
+                        <thead class="table-light text-secondary">
+                            <tr>
+                                <th>S.No</th>
+                                <th>Name</th>
+                                <th>Roll No</th>
+                                <th>Subject1</th>
+                                <th>Subject2</th>
+                                <th>Subject3</th>
+                                <th>Subject4</th>
+                                <th>Subject5</th>
+                                <th>Total</th>
+                                <th>Grade</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        let rowCount = 0; 
+        document.getElementById('markSheetForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const rollNo = document.getElementById('rollNo').value;
+            const sub1 = parseInt(document.getElementById('sub1').value);
+            const sub2 = parseInt(document.getElementById('sub2').value);
+            const sub3 = parseInt(document.getElementById('sub3').value);
+            const sub4 = parseInt(document.getElementById('sub4').value);
+            const sub5 = parseInt(document.getElementById('sub5').value);
+            const total = sub1 + sub2 + sub3 + sub4 + sub5;
+            const passCriteria = 35;
+            const hasPassed = (sub1 >= passCriteria && sub2 >= passCriteria && sub3 >= passCriteria && sub4 >= passCriteria && sub5 >= passCriteria);
+            const resultText = hasPassed ? "Pass" : "Fail";
+            const resultClass = hasPassed ? "text-pass" : "text-fail";
+            let grade = "F";
+            if (hasPassed) {
+                if (total >= 400) grade = "A";
+                else if (total >= 300) grade = "B";
+                else if (total >= 200) grade = "C";
+            }
+            rowCount++;
+            const tableBody = document.querySelector('#markSheetTable tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${rowCount}</td>
+                <td class="text-start px-3">${name}</td>
+                <td>${rollNo}</td>
+                <td>${sub1}</td>
+                <td>${sub2}</td>
+                <td>${sub3}</td>
+                <td>${sub4}</td>
+                <td>${sub5}</td>
+                <td class="fw-bold">${total}</td>
+                <td class="fw-bold">${grade}</td>
+                <td class="${resultClass}">${resultText}</td>
+            `;
+            tableBody.appendChild(row);
+            document.getElementById('markSheetForm').reset();
+        });
+    </script>
+</body>
+</html>
